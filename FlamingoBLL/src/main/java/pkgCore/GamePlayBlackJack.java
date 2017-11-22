@@ -100,7 +100,7 @@ public class GamePlayBlackJack extends GamePlay {
 		//			If Player's hand < Dealer's hand and Dealer didn't bust = LOSE
 		//			If Player's hand == Dealer's hand and both didn't bust = TIE
 		
-		juj
+		
 	}
 
 	public Player getpDealer() {
