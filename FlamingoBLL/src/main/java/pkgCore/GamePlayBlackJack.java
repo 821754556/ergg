@@ -93,7 +93,7 @@ public class GamePlayBlackJack extends GamePlay {
 		//	TODO: Find the Dealer's hand
 		//	TODO: Score Dealer's hand
 		
-		//	TODO: Find Player's hand yjjyj
+		//	TODO: Find Player's hand 
 		//	TODO: Score Player's hand u?
 		
 		//	TODO: If Player's hand > Dealer's hand and <= 21, then eBlackJackResult = WIN
