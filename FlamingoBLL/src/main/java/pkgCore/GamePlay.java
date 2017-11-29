@@ -1,4 +1,4 @@
-package pkgCore;
+ package pkgCore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +56,7 @@ public abstract class GamePlay {
 		return hmGamePlayers;
 	}
 
-	private HashMap<GamePlayerHand, Hand> getHmGameHands() {
+	protected HashMap<GamePlayerHand, Hand> getHmGameHands() {
 		return hmGameHands;
 	}
 
