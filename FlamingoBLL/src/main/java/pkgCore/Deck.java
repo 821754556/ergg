@@ -1,4 +1,4 @@
-package pkgCore;
+ package pkgCore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,3 +45,4 @@ public class Deck {
 		return cardsInDeck.size();
 	}
 }
+ 

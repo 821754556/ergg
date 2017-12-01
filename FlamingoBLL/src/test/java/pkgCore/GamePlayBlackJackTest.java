@@ -1,156 +1,136 @@
  package pkgCore;
 
 import static org.junit.Assert.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
+
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.Test;
 
-import pkgEnum.eBlackJackResult;
 import pkgEnum.eRank;
 import pkgEnum.eSuit;
-import pkgException.DeckException;
 import pkgException.HandException;
 
 public class GamePlayBlackJackTest {
 
 	@Test
 	public void TestPlayerWinning() {
-
-		Table t = new Table();
-		Player p1 = new Player("XXX", 1);
-		t.AddPlayerToTable(p1);
-		Deck d = new Deck();
-		GamePlayBlackJack gpBJ = new GamePlayBlackJack(t.getHmTablePlayer(), d);
-
-		HandBlackJack hand1 = new HandBlackJack();
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.ACE));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.QUEEN));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.KING));
-		hand1.AddCard(new Card(eSuit.HEARTS, eRank.SEVEN));
-
-		gpBJ.sethDealer(hand1);
-
-		HandBlackJack hand2 = new HandBlackJack();
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.NINE));
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.FOUR));
-
-		GamePlayerHand GPH = new GamePlayerHand(gpBJ.getGameID(), p1.getPlayerID(), hand2.getHandID());
-		gpBJ.putHandToGame(GPH, hand2);
-
-		gpBJ.ScoreGame(GPH);
-		assertEquals(eBlackJackResult.WIN, hand2.geteBlackJackResult());
+		Player player = new Player("Mary", 0);
+		HashMap<UUID, Player> hmTablePlayers = new HashMap<>();
+		hmTablePlayers.put(player.getPlayerID(),player );
+		
+		Deck deck = new Deck();
+		GamePlayBlackJack game = new GamePlayBlackJack(hmTablePlayers, deck);
+		Hand hand = new HandBlackJack();
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand.AddCard(new Card(eSuit.SPADES, eRank.FOUR));
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand=new GamePlayerHand(game.getGameID(), player.getPlayerID(), hand.getHandID());
+		game.putHandToGame(gamePlayerHand, hand);
+		
+		Player dealer = game.getpDealer();
+		Hand hand2 = new HandBlackJack();
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand2.AddCard(new Card(eSuit.SPADES, eRank.THREE));
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand2=new GamePlayerHand(game.getGameID(), dealer.getPlayerID(), hand2.getHandID());
+		game.putHandToGame(gamePlayerHand2, hand2);
+		
+		game.ScoreGame(gamePlayerHand);
+		
+		assertTrue(hand.isbWinner());
 	}
 
 	@Test
 	public void TestPlayerLosing() {
-		Table t = new Table();
-		Player p1 = new Player("XXX", 1);
-		t.AddPlayerToTable(p1);
-		Deck d = new Deck();
-		GamePlayBlackJack gpBJ = new GamePlayBlackJack(t.getHmTablePlayer(), d);
-
-		HandBlackJack hand1 = new HandBlackJack();
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.ACE));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.JACK));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.KING));
-		hand1.AddCard(new Card(eSuit.HEARTS, eRank.SEVEN));
-
-		// Assign a hand to the dealer
-		gpBJ.sethDealer(hand1);
-
-		// Create a hand for the player
-		HandBlackJack hand2 = new HandBlackJack();
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.NINE));
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.FOUR));
-		GamePlayerHand GPH = new GamePlayerHand(gpBJ.getGameID(), p1.getPlayerID(), hand2.getHandID());
-		gpBJ.putHandToGame(GPH, hand2);
-
-		gpBJ.ScoreGame(GPH);
-		assertEquals(eBlackJackResult.LOSE, hand2.geteBlackJackResult());
+		Player player = new Player("Mary", 0);
+		HashMap<UUID, Player> hmTablePlayers = new HashMap<>();
+		hmTablePlayers.put(player.getPlayerID(),player );
+		
+		Deck deck = new Deck();
+		GamePlayBlackJack game = new GamePlayBlackJack(hmTablePlayers, deck);
+		Hand hand = new HandBlackJack();
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand.AddCard(new Card(eSuit.SPADES, eRank.TEN));
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand=new GamePlayerHand(game.getGameID(), player.getPlayerID(), hand.getHandID());
+		game.putHandToGame(gamePlayerHand, hand);
+		
+		Player dealer = game.getpDealer();
+		Hand hand2 = new HandBlackJack();
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand2.AddCard(new Card(eSuit.SPADES, eRank.THREE));
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand2=new GamePlayerHand(game.getGameID(), dealer.getPlayerID(), hand2.getHandID());
+		game.putHandToGame(gamePlayerHand2, hand2);
+		
+		game.ScoreGame(gamePlayerHand);
+		
+		assertFalse(hand.isbWinner());
 	}
-
+	
 	@Test
 	public void TestPlayerPush() {
-		Table t = new Table();
+		Player player = new Player("Mary", 0);
+		HashMap<UUID, Player> hmTablePlayers = new HashMap<>();
+		hmTablePlayers.put(player.getPlayerID(),player );
 		
-		Player p1 = new Player("Mike", 1);
-		Player p2 = new Player("John", 2);
-		t.AddPlayerToTable(p1);
-		t.AddPlayerToTable(p2);
-		
-		Deck d = new Deck();
-		
-		GamePlayBlackJack testGame = new GamePlayBlackJack(t.getHmTablePlayer(), d);
-		
-		HandBlackJack hand1 = new HandBlackJack();
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.FIVE));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.THREE));
-		hand1.AddCard(new Card(eSuit.HEARTS, eRank.SEVEN));
-		
-		testGame.sethDealer(hand1);
-		
-		HandBlackJack hand2 = new HandBlackJack();
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.NINE));
-		hand2.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		
-		GamePlayerHand GPH = new GamePlayerHand(testGame.getGameID(),p1.getPlayerID(),hand2.getHandID());
-		testGame.putHandToGame(GPH, hand2);
-
-		testGame.ScoreGame(GPH);
-		assertEquals(eBlackJackResult.TIE, hand2.geteBlackJackResult());
-		
-			
-	}
-
-	@Test
-	public void TestTwoPlayersWinning() {
-		Table t = new Table();
-
-		Player p1 = new Player("XXX XXX", 1);
-		Player p2 = new Player("XX  XX", 2);
-
-		t.AddPlayerToTable(p1);
-		t.AddPlayerToTable(p2);
-
 		Deck deck = new Deck();
-
-		GamePlayBlackJack testGame = new GamePlayBlackJack(t.getHmTablePlayer(), deck);
-
-		HandBlackJack hand1 = new HandBlackJack();
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.FIVE));
-		hand1.AddCard(new Card(eSuit.CLUBS, eRank.THREE));
-		hand1.AddCard(new Card(eSuit.HEARTS, eRank.SEVEN));
-		testGame.sethDealer(hand1);
-
-		HandBlackJack playerHand1 = new HandBlackJack();
-		playerHand1.AddCard(new Card(eSuit.CLUBS, eRank.TEN));
-		playerHand1.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		playerHand1.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
-
-		HandBlackJack playerHand2 = new HandBlackJack();
-		playerHand2.AddCard(new Card(eSuit.CLUBS, eRank.THREE));
-		playerHand2.AddCard(new Card(eSuit.CLUBS, eRank.TWO));
-		playerHand2.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
-		playerHand2.AddCard(new Card(eSuit.CLUBS, eRank.FOUR));
-		playerHand2.AddCard(new Card(eSuit.CLUBS, eRank.FIVE));
-
-		GamePlayerHand GPH1 = new GamePlayerHand(testGame.getGameID(), p1.getPlayerID(), playerHand1.getHandID());
-		testGame.putHandToGame(GPH1, playerHand1);
-
-		GamePlayerHand GPH2 = new GamePlayerHand(testGame.getGameID(), p2.getPlayerID(), playerHand2.getHandID());
-		testGame.putHandToGame(GPH2, playerHand2);
-
-		testGame.ScoreGame(GPH1);
-
-		assertEquals(eBlackJackResult.WIN, playerHand1.geteBlackJackResult());
-		assertEquals(eBlackJackResult.WIN, playerHand2.geteBlackJackResult());
+		GamePlayBlackJack game = new GamePlayBlackJack(hmTablePlayers, deck);
+		Hand hand = new HandBlackJack();
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand.AddCard(new Card(eSuit.SPADES, eRank.TEN));
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand=new GamePlayerHand(game.getGameID(), player.getPlayerID(), hand.getHandID());
+		game.putHandToGame(gamePlayerHand, hand);
+		
+		try {
+			assertTrue(game.bDoesDealerHaveToDraw());
+		} catch (HandException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
+	
+	@Test
+	public void TestTwoPlayersWinning()
+	{
+		Player player = new Player("Mary", 0);
+		Player player2 = new Player("Lucy", 1);
+		HashMap<UUID, Player> hmTablePlayers = new HashMap<>();
+		hmTablePlayers.put(player.getPlayerID(),player );
+		hmTablePlayers.put(player2.getPlayerID(), player2);
+		
+		Deck deck = new Deck();
+		GamePlayBlackJack game = new GamePlayBlackJack(hmTablePlayers, deck);
+		Hand hand = new HandBlackJack();
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand.AddCard(new Card(eSuit.SPADES, eRank.FOUR));
+		hand.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand=new GamePlayerHand(game.getGameID(), player.getPlayerID(), hand.getHandID());
+		game.putHandToGame(gamePlayerHand, hand);
+		
+		Hand hand3 = new HandBlackJack();
+		hand3.AddCard(new Card(eSuit.CLUBS, eRank.TEN));
+		hand3.AddCard(new Card(eSuit.SPADES, eRank.FOUR));
+		hand3.AddCard(new Card(eSuit.CLUBS, eRank.FIVE));
+		GamePlayerHand gamePlayerHand3=new GamePlayerHand(game.getGameID(), player2.getPlayerID(), hand3.getHandID());
+		game.putHandToGame(gamePlayerHand3, hand3);
+		
+		Player dealer = game.getpDealer();
+		Hand hand2 = new HandBlackJack();
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.EIGHT));
+		hand2.AddCard(new Card(eSuit.SPADES, eRank.THREE));
+		hand2.AddCard(new Card(eSuit.CLUBS, eRank.SEVEN));
+		GamePlayerHand gamePlayerHand2=new GamePlayerHand(game.getGameID(), dealer.getPlayerID(), hand2.getHandID());
+		game.putHandToGame(gamePlayerHand2, hand2);
+		
+		game.ScoreGame(gamePlayerHand);
+		
+		game.ScoreGame(gamePlayerHand3);
+		
+		assertTrue(hand.isbWinner());
+		
+		assertTrue(hand3.isbWinner());
+	}
 }

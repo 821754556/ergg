@@ -1,9 +1,7 @@
- package pkgCore;
+  package pkgCore;
 
 import java.util.Collections;
 import java.util.LinkedList;
-
-import pkgEnum.eBlackJackResult;
 
 public class HandBlackJack extends Hand  {
 
@@ -71,15 +69,7 @@ public class HandBlackJack extends Hand  {
 	public void setbWinner(boolean bWinner) {
 		super.setbWinner(bWinner);
 	}
-	private eBlackJackResult eBlackJackResult;
-
-	public eBlackJackResult geteBlackJackResult() {
-		return eBlackJackResult;
-	}
-
-	public void seteBlackJackResult(eBlackJackResult eBlackJackResult) {
-		this.eBlackJackResult = eBlackJackResult;
-	}
+	
 	
 
 }

@@ -1,4 +1,4 @@
-package pkgCore;
+ package pkgCore;
 
 import java.io.Serializable;
 import java.util.UUID;

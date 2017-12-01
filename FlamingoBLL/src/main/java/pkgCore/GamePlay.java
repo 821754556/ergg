@@ -1,4 +1,4 @@
- package pkgCore;
+    package pkgCore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,14 +32,17 @@ public abstract class GamePlay {
 			Player p = (Player) pair.getValue();
 
 			//TODO: Add the player to the game
+			AddPlayerToGame(p);
 		}
 
 		switch (eGameType) {
 		case BLACKJACK:
 			//TODO: Set the game deck to the existing passed-in deck
+			this.dGameDeck = dGameDeck;
 			break;
 		case POKER:
 			//TODO: Set the game deck to a brand new deck
+			this.dGameDeck = new Deck();
 			break;
 		}
 	}
@@ -56,12 +59,12 @@ public abstract class GamePlay {
 		return hmGamePlayers;
 	}
 
-	protected HashMap<GamePlayerHand, Hand> getHmGameHands() {
+	private HashMap<GamePlayerHand, Hand> getHmGameHands() {
 		return hmGameHands;
 	}
 
 	protected Hand gethmGameHand(GamePlayerHand GPH) {
-		return this.hmGameHands.get(GPH.getGPH());
+		return this.hmGameHands.get(GPH);
 	}
 
 	public void setHmGameHands(HashMap<GamePlayerHand, Hand> hmGameHands) {
